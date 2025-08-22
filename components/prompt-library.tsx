@@ -74,6 +74,20 @@ export default function PromptLibrary() {
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Prompt Library</h2>
         <div className="flex items-center gap-2">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search prompts..."
+              className="w-[250px] pl-8"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <Button>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            New Prompt
+          </Button>
         </div>
       </div>
 
@@ -81,6 +95,7 @@ export default function PromptLibrary() {
         <TabsList>
           <TabsTrigger value="base">Base Prompts</TabsTrigger>
           <TabsTrigger value="client">Client Prompts</TabsTrigger>
+          <TabsTrigger value="experimental">Experimental</TabsTrigger>
         </TabsList>
 
         <TabsContent value="base" className="space-y-4 mt-4">
@@ -162,6 +177,10 @@ export default function PromptLibrary() {
                     <Edit className="mr-2 h-4 w-4" />
                     Edit
                   </Button>
+                  <Button variant="outline" size="sm" onClick={() => (window.location.href = `/prompts/${prompt.id}`)}>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit
+                  </Button>
                   <Button variant="outline" size="sm">
                     <Archive className="mr-2 h-4 w-4" />
                     Archive
@@ -182,6 +201,21 @@ export default function PromptLibrary() {
                 Add Prompt
               </Button>
             </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="experimental" className="space-y-4 mt-4">
+          <div className="flex flex-col items-center justify-center p-12 border rounded-lg">
+            <PlusCircle className="h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium mb-2">Create Experimental Prompt</h3>
+            <p className="text-muted-foreground text-center max-w-md mb-4">
+              Experimental prompts let you test new ideas without affecting production. They can be promoted to base
+              prompts when ready.
+            </p>
+            <Button onClick={() => (window.location.href = "/prompts/new")}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              New Experimental Prompt
+            </Button>
           </div>
         </TabsContent>
       </Tabs>

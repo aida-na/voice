@@ -82,8 +82,12 @@ Keep responses conversational, brief, and focused on the patient's needs.`)
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline">
+            <History className="mr-2 h-4 w-4" />
+            History
+          </Button>
+          <Button variant="outline">
             <Play className="mr-2 h-4 w-4" />
-            Deploy
+            Test
           </Button>
           <Button>
             <Save className="mr-2 h-4 w-4" />
@@ -170,6 +174,19 @@ Keep responses conversational, brief, and focused on the patient's needs.`)
               <CardTitle>Prompt Content</CardTitle>
             </CardHeader>
             <CardContent>
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="edit">Edit</TabsTrigger>
+                  <TabsTrigger value="preview">Preview</TabsTrigger>
+                </TabsList>
+                <TabsContent value="edit" className="mt-4">
+                  <Textarea
+                    className="min-h-[400px] font-mono"
+                    value={promptContent}
+                    onChange={(e) => setPromptContent(e.target.value)}
+                  />
+                </TabsContent>
+                <TabsContent value="preview" className="mt-4">
                   <div className="border rounded-md p-4 min-h-[400px] prose max-w-none">
                     <div className="flex justify-between items-center mb-4">
                       <h1>Medicare Welcome Call Prompt Template</h1>
@@ -231,6 +248,8 @@ Keep responses conversational, brief, and focused on the patient's needs.`)
                     <h2>Response Format</h2>
                     <p>Keep responses conversational, brief, and focused on the patient's needs.</p>
                   </div>
+                </TabsContent>
+              </Tabs>
             </CardContent>
             <CardFooter className="flex justify-between">
               <div className="text-sm text-muted-foreground">Use {"{variable_name}"} for dynamic content</div>

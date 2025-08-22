@@ -96,6 +96,7 @@ export default function DeploymentDashboard() {
       <Tabs defaultValue="demo">
         <TabsList>
           <TabsTrigger value="demo">Demo Lines</TabsTrigger>
+          <TabsTrigger value="dev">Dev Lines</TabsTrigger>
           <TabsTrigger value="prod">Production Lines</TabsTrigger>
         </TabsList>
 
@@ -219,6 +220,162 @@ export default function DeploymentDashboard() {
           </div>
         </TabsContent>
 
+        <TabsContent value="dev" className="space-y-4 mt-4">
+          <div className="grid grid-cols-1 gap-4">
+            {devDeployments.map((deployment) => (
+              <Card key={deployment.id}>
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-start">
+                    <CardTitle>{deployment.name}</CardTitle>
+                    <div className="flex gap-2">
+                      <Badge variant={deployment.callDirection === "Outbound" ? "outline" : "secondary"}>
+                        {deployment.callDirection}
+                      </Badge>
+                      <Badge variant={deployment.status === "Active" ? "default" : "secondary"}>
+                        {deployment.status}
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardDescription>Line ID: {deployment.lineId}</CardDescription>
+                  <div className="mt-1 text-sm text-muted-foreground flex items-center">
+                    <Phone className="h-3 w-3 mr-1" />
+                    {deployment.phoneNumber}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-1">
+                      <div className="text-sm font-medium">Prompt Version</div>
+                      <div className="flex items-center text-sm">
+                        <AlertCircle className="mr-1 h-4 w-4 text-amber-500" />
+                        {deployment.promptVersion}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-sm font-medium">Last Deployed</div>
+                      <div className="flex items-center text-sm">
+                        <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
+                        {deployment.lastDeployed}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-sm font-medium">Performance</div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center text-sm">
+                          <Phone className="mr-1 h-4 w-4 text-muted-foreground" />
+                          {deployment.calls} calls
+                        </div>
+                        <div className="flex items-center text-sm">
+                          <CheckCircle className="mr-1 h-4 w-4 text-green-500" />
+                          {deployment.successRate}% success
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <Select defaultValue="current">
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select version" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="current">{deployment.promptVersion} (Current)</SelectItem>
+                        <SelectItem value="previous">Previous Version</SelectItem>
+                        <SelectItem value="new">New Version</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" size="sm">
+                      <RotateCcw className="mr-2 h-4 w-4" />
+                      Update
+                    </Button>
+                  </div>
+                  <div className="flex gap-2">
+                    {deployment.status === "Active" ? (
+                      <Button variant="outline" size="sm">
+                        <Pause className="mr-2 h-4 w-4" />
+                        Pause
+                      </Button>
+                    ) : (
+                      <Button variant="outline" size="sm">
+                        <Play className="mr-2 h-4 w-4" />
+                        Activate
+                      </Button>
+                    )}
+                    <Button variant="outline" size="sm">
+                      Promote to Demo
+                    </Button>
+                  </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Phone className="mr-2 h-4 w-4" />
+                        Change Number
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Change Phone Number</DialogTitle>
+                        <DialogDescription>Assign a different phone number to this deployment.</DialogDescription>
+                      </DialogHeader>
+                      <div className="py-4">
+                        <Label htmlFor="phoneNumber">Phone Number</Label>
+                        <Select defaultValue={deployment.id}>
+                          <SelectTrigger id="phoneNumber" className="mt-2">
+                            <SelectValue placeholder="Select phone number" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value={deployment.id}>{deployment.phoneNumber} (Current)</SelectItem>
+                            <SelectItem value="pn1">+1 (555) 678-9012 (Available)</SelectItem>
+                            <SelectItem value="pn2">+1 (555) 789-0123 (Available)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <DialogFooter>
+                        <Button variant="outline">Cancel</Button>
+                        <Button>Save Changes</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </CardFooter>
+              </Card>
+            ))}
+
+            <Card className="border-dashed flex flex-col items-center justify-center p-6">
+              <Play className="h-8 w-8 text-muted-foreground mb-2" />
+              <p className="text-muted-foreground text-sm font-medium">Deploy New Dev Line</p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="sm" className="mt-2">
+                    New Deployment
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>New Deployment</DialogTitle>
+                    <DialogDescription>Create a new development line.</DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-2 mt-4">
+                    <Label htmlFor="callDirection">Call Direction</Label>
+                    <Select defaultValue="outbound">
+                      <SelectTrigger id="callDirection">
+                        <SelectValue placeholder="Select call direction" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="outbound">Outbound</SelectItem>
+                        <SelectItem value="inbound">Inbound</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline">Cancel</Button>
+                    <Button>Create Deployment</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </Card>
+          </div>
+        </TabsContent>
 
         <TabsContent value="prod" className="space-y-4 mt-4">
           <div className="flex flex-col items-center justify-center p-12 border rounded-lg">

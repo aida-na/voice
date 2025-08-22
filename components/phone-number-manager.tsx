@@ -32,7 +32,6 @@ const phoneNumbersData = [
     label: "City Clinic Demo",
     status: "Active",
     deployment: "City Clinic - Appointment v1.5",
-    deploymentDate: "2024-01-15",
   },
   {
     id: "3",
@@ -40,7 +39,6 @@ const phoneNumbersData = [
     label: "Health Partners Demo",
     status: "Inactive",
     deployment: "Health Partners - Discharge v1.0",
-    deploymentDate: "2024-02-20",
   },
   {
     id: "4",
@@ -48,7 +46,6 @@ const phoneNumbersData = [
     label: "Memorial Hospital Dev",
     status: "Active",
     deployment: "Memorial Hospital - Med Adherence v2.4-beta",
-    deploymentDate: "2024-03-10",
   },
   {
     id: "5",
@@ -56,7 +53,6 @@ const phoneNumbersData = [
     label: "City Clinic Dev",
     status: "Active",
     deployment: "City Clinic - Appointment v2.0-test",
-    deploymentDate: "2024-04-05",
   },
   { id: "6", number: "+1 (555) 678-9012", label: "Unassigned", status: "Available", deployment: "None" },
 ]
@@ -75,7 +71,6 @@ export default function PhoneNumberManager() {
         label: newPhoneLabel,
         status: "Available",
         deployment: "None",
-        deploymentDate: "2024-04-05",
       }
       setPhoneNumbers([...phoneNumbers, newPhone])
       setNewPhoneNumber("")
@@ -140,7 +135,6 @@ export default function PhoneNumberManager() {
               <TableHead>Label</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Current Deployment</TableHead>
-              <TableHead>Deployment Date</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -164,7 +158,6 @@ export default function PhoneNumberManager() {
                   </Badge>
                 </TableCell>
                 <TableCell>{phone.deployment}</TableCell>
-                <TableCell>{phone.deploymentDate}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button variant="ghost" size="icon">
